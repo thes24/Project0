@@ -1,9 +1,12 @@
 package com.example.Project0.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+// import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.Project0.dto.MemberDTO;
 
 @Controller
 @RequestMapping("/member")
@@ -16,9 +19,9 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestParam String memberEmail, String memberPassword, String memberName) {
+    public String signup(@ModelAttribute MemberDTO memberDTO) {
         System.out.println("Member Signup");
-        System.out.println("Email:" + memberEmail + "Password:" + memberPassword + "Name:" + memberName);
+        System.out.println("MemberDTO:" + memberDTO);
         return "index.html";
     }
 
