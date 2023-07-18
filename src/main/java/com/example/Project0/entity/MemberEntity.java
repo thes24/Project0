@@ -1,6 +1,6 @@
 package com.example.Project0.entity;
 
-import com.example.Project0.dto.MemberDTO;
+import com.example.Project0.dto.SignUpDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,11 +30,11 @@ public class MemberEntity {
     @Column()
     private String memberName;
 
-    public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
+    public static MemberEntity toMemberEntity(SignUpDTO signUpDTO) {
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
-        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
-        memberEntity.setMemberName(memberDTO.getMemberName());
+        memberEntity.setMemberEmail(signUpDTO.getMemberEmail());
+        memberEntity.setMemberPassword(signUpDTO.getMemberPassword());
+        memberEntity.setMemberName(signUpDTO.getMemberName());
 
         return memberEntity;
     }
