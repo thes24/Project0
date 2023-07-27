@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Find All</title>
+    </head>
+    <body>
+        <h2>findAll.html</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Name</th>
+                    <th>Check</th>
+                    <th>Delete(get)</th>
+                    <th>Delete(delete)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 스프링 프레임워크에 <c:forEach items="${mList}" var="m"> 와 같은 역할 -->
+                <tr th:each="member: ${memberList}">
+                    <td th:text="${member.Id}">Id</td>
+                    <td th:text="${member.memberEmail}">Email</td>
+                    <td th:text="${member.memberPassword}">Password</td>
+                    <td th:text="${member.memberName}">Name</td>
+                    <!-- detail 주소 처리방식 @{|/주소/${같이 보낼 데이터}|} -->
+                    <td><a th:href="@{|/member/${member.Id}|}">조회</a></td>
+                    <td><a th:href="@{|/member/delete/${member.Id}|}">삭제</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
