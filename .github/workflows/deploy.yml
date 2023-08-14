@@ -1,0 +1,39 @@
+name: deploy
+
+on:
+  push:
+    branches: [ product ]
+  
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout release
+      uses: actions/checkout@v3
+
+    - name: install deploy.sh
+      run: |
+        mv $GITHUB_WORKSPACE/deploy.sh $GITHUB_WORKSPACE/deploy.sh
+    
+    - name: archive project0
+      run: tar cvfz $GITHUB_WORKSPACE/project0.tar.gz *
+      
+    - name: AWS configure credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        aws-region: us-east-2
+        
+    - name: upload to S3
+      run: aws s3 cp --region us-east-2 $GITHUB_WORKSPACE/project0.tar.gz s3://project0-deploy
+  
+    - name: deploy with AWS codeDeploy
+      run: aws deploy create-deployment
+        --application-name project0
+        --deployment-group-name api
+        --file-exists-behavior OVERWRITE
+        --s3-location bucket=project0-deploy,bundleType=tgz,key=project0.tar.gz
+        --region us-east-2
