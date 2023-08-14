@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>FindById</title>
-    </head>
-    <body>
-        <h2>findById.html</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Email</th>
-                    <th>Password</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td th:text="${member.id}"></td>
-                    <td th:text="${member.memberEmail}"></td>
-                    <td th:text="${member.memberPassword}"></td>
-                    <td th:text="${member.memberName}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Member FindById</title>
+</head>
+
+<body>
+    <h2>Member findById.html</h2>
+    <table style="width: 50%;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.memberEmail}"></td>
+                <td th:text="${member.memberPassword}"></td>
+                <td th:text="${member.memberName}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
 </html>

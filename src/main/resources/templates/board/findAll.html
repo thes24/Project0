@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+
+<body>
+    <h2>findAll.html</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>작성자</th>
+                <th>제목</th>
+                <th>작성일자</th>
+                <th>수정일자</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board:${boardList}">
+                <td th:text="${board.boardId}"></td>
+                <td th:text="${board.boardWriter}"></td>
+                <td>
+                    <a th:href="@{|/board/${board.boardId}|}">
+                        <span th:text="${board.boardTitle}"></span>
+                    </a>
+                </td>
+                <td th:text="${board.createDateTime}"></td>
+                <td th:text="${board.updateDateTime}"></td>
+                <!-- 제목 클릭하면 상세조회화면(findById.html) 출력 -->
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

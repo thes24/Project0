@@ -14,20 +14,21 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-@Table(name = "member")
+@Table(name = "member_table")
 public class MemberEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
-    @Column(length = 50, unique = true)
+    @Column(unique = true)
     private String memberEmail;
 
-    @Column(length = 20)
+    @Column
     private String memberPassword;
 
-    @Column()
+    @Column
     private String memberName;
 
     public static MemberEntity toMemberEntity(SignUpDTO signUpDTO) {

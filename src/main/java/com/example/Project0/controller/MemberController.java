@@ -19,19 +19,19 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/member/")
+@RequestMapping("/member")
 @RequiredArgsConstructor
-public class MainController {
+public class MemberController {
     //생성자 주입
     private final MemberService memberService;
 
     //회원가입 페이지 출력 요청
-    @GetMapping("signup")
+    @GetMapping("/signup")
     public String suForm() {
         return "member/signup";
     }
 
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public String signup(@ModelAttribute SignUpDTO signUpDTO) {
         System.out.println("Member Signup");
         System.out.println("MemberDTO:" + signUpDTO);
@@ -41,23 +41,23 @@ public class MainController {
     }
 
     //로그인 페이지 출력 요청
-    @RequestMapping("login")
+    @RequestMapping("/login")
     public String logForm() {
         return "member/login";
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public String login(@ModelAttribute LogInDTO logInDTO, HttpSession session) {
         if (memberService.login(logInDTO)) {
             session.setAttribute("loginEmail", logInDTO.getMemberEmail());
-            return "redirect:/member/";
+            return "boar";
         } else {
             return "member/login";
         }
     }
 
     //회원목록 조회
-    @GetMapping
+    @GetMapping("/")
     public String findAll(Model model) {
         List<MemberDetailDTO> memberList = memberService.findAll();
         model.addAttribute("memberList", memberList);
@@ -67,7 +67,7 @@ public class MainController {
     // 상세조회
     // /member/2, /member/15 => /member/{memberId}
     // @PathVariavle : 경로상에 있는 변수를 가져올 때 사용
-    @GetMapping("{memberId}")
+    @GetMapping("/{memberId}")
     //public String findById(@PathVariable("memberId") Long memberId, Model model) {
     // @PathVarialbe에서 받는 값의 이름과 매개변수의 값의 이름이 같다면 아래와 같이 생략가능
     public String findById(@PathVariable Long memberId, Model model) {
@@ -77,7 +77,7 @@ public class MainController {
     }
 
     // 회원삭제(/member/delete/5)
-    @GetMapping("delete/{memberId}")
+    @GetMapping("/delete/{memberId}")
     public String deleteById(@PathVariable("memberId") Long memberId) {
         memberService.deleteById(memberId);
         return "redirect:/member/";
