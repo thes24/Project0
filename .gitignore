@@ -36,4 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
+### SECRET ###
+product._properties
+
 .DS_Store
