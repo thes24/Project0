@@ -12,10 +12,6 @@ jobs:
     steps:
     - name: checkout release
       uses: actions/checkout@v3
-
-    - name: install deploy.sh
-      run: |
-        mv $GITHUB_WORKSPACE/deploy.sh $GITHUB_WORKSPACE/deploy.sh
     
     - name: archive project0
       run: tar cvfz $GITHUB_WORKSPACE/project0.tar.gz *
