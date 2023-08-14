@@ -17,7 +17,7 @@ jobs:
       run: rm $GITHUB_WORKSPACE/src/main/resources/application.properties
     
     - name: install production properties
-      run: echo '{{ secrets.APPLICATION_PROPERTIES }}' >> $GITHUB_WORKSPACE/src/main/resources/application.properties
+      run: echo '${{ secrets.APPLICATION_PROPERTIES }}' >> $GITHUB_WORKSPACE/src/main/resources/application.properties
 
     - name: archive project0
       run: tar cvfz $GITHUB_WORKSPACE/project0.tar.gz *
