@@ -1,5 +1,7 @@
 package com.example.Project0.entity;
 
+import com.example.Project0.dto.MemberDetailDTO;
+import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.SignUpDTO;
 
 import jakarta.persistence.Column;
@@ -36,6 +38,15 @@ public class MemberEntity {
         memberEntity.setMemberEmail(signUpDTO.getMemberEmail());
         memberEntity.setMemberPassword(signUpDTO.getMemberPassword());
         memberEntity.setMemberName(signUpDTO.getMemberName());
+
+        return memberEntity;
+    }
+
+    public static MemberEntity toUpdateMember(MemberUpdateDTO memberUpdateDTO) {
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberEmail(memberUpdateDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberUpdateDTO.getMemberPassword());
+        memberEntity.setMemberName(memberUpdateDTO.getMemberName());
 
         return memberEntity;
     }

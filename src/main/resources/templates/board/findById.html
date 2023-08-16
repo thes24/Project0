@@ -3,21 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Board FindById</title>
 </head>
 
 <body>
-    <h2>findById.html</h2>
+    <h2>Board findById.html</h2>
     <table style="width: 50%;">
         <thead>
             <tr>
-                <th>번호</th>
-                <th>작성자</th>
-                <th>제목</th>
-                <th>내용</th>
-                <th>작성시간</th>
-                <th>수정시간</th>
-                <th>수정</th>
+                <th>Number</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Create DateTime</th>
+                <th>Update DateTime</th>
+                <th>Update</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +28,7 @@
                 <th th:text="${boardDetailDTO.boardContent}"></th>
                 <th th:text="${boardDetailDTO.createDateTime}"></th>
                 <th th:text="${boardDetailDTO.updateDateTime}"></th>
-                <th><a th:href="@{|/board/update/${boardDetailDTO.boardId}|}">수정페이지</a></th>
+                <th><a th:href="@{|/board/update/${boardDetailDTO.boardId}|}">Update Page</a></th>
             </tr>
         </tbody>
     </table>

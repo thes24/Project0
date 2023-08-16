@@ -2,16 +2,22 @@ package com.example.Project0.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.MemberDetailDTO;
+import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.SignUpDTO;
 import com.example.Project0.services.MemberService;
 
@@ -50,7 +56,7 @@ public class MemberController {
     public String login(@ModelAttribute LogInDTO logInDTO, HttpSession session) {
         if (memberService.login(logInDTO)) {
             session.setAttribute("loginEmail", logInDTO.getMemberEmail());
-            return "boar";
+            return "member/mypage";
         } else {
             return "member/login";
         }
@@ -81,5 +87,31 @@ public class MemberController {
     public String deleteById(@PathVariable("memberId") Long memberId) {
         memberService.deleteById(memberId);
         return "redirect:/member/";
+    }
+
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<?> deleteById2(@PathVariable Long memberId) {
+        memberService.deleteById(memberId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/update/{memberId}")
+    public String updateForm(Model model, HttpSession session) {
+        String memberEmail = (String) session.getAttribute("loginEmail");
+        MemberUpdateDTO memberUpdateDTO = memberService.findByEmail(memberEmail);
+        model.addAttribute("member", memberUpdateDTO);
+        return "member/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute MemberUpdateDTO memberUpdateDTO) {
+        Long memberId = memberService.update(memberUpdateDTO);
+        return "redirect:/member/" + memberUpdateDTO.getMemberId();
+    }
+
+    @PutMapping("/{memberId}")
+    public ResponseEntity<?> update2(@RequestBody MemberUpdateDTO memberUpdateDTO) {
+        Long memberId = memberService.update(memberUpdateDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

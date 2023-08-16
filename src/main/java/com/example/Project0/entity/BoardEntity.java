@@ -1,5 +1,6 @@
 package com.example.Project0.entity;
 
+import com.example.Project0.dto.BoardUpdateDTO;
 import com.example.Project0.dto.BoardWriteDTO;
 
 import jakarta.persistence.Column;
@@ -40,6 +41,16 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardPassword(boardWriteDTO.getBoardPassword());
         boardEntity.setBoardTitle(boardWriteDTO.getBoardTitle());
         boardEntity.setBoardContent(boardWriteDTO.getBoardContent());
+
+        return boardEntity;
+    }
+
+    public static BoardEntity updateBoard(BoardUpdateDTO boardUpdateDTO) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardWriter(boardUpdateDTO.getBoardWriter());
+        boardEntity.setBoardPassword(boardUpdateDTO.getBoardPassword());
+        boardEntity.setBoardTitle(boardUpdateDTO.getBoardTitle());
+        boardEntity.setBoardContent(boardUpdateDTO.getBoardContent());
 
         return boardEntity;
     }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberDetailDTO {
 
-    private Long id;
+    private Long memberId;
     private String memberEmail;
     private String memberPassword;
     private String memberName;
@@ -24,7 +24,7 @@ public class MemberDetailDTO {
     // 매개변수타입 : MemberEntity
     public static MemberDetailDTO toMemberDetailDTO(MemberEntity memberEntity) {
         MemberDetailDTO memberDetailDTO = new MemberDetailDTO();
-        memberDetailDTO.setId(memberEntity.getId());
+        memberDetailDTO.setMemberId(memberEntity.getId());
         memberDetailDTO.setMemberEmail(memberEntity.getMemberEmail());
         memberDetailDTO.setMemberPassword(memberEntity.getMemberPassword());
         memberDetailDTO.setMemberName(memberEntity.getMemberName());

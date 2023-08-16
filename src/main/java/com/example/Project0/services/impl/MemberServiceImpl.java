@@ -6,12 +6,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.Project0.dto.MemberDetailDTO;
+import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.SignUpDTO;
 import com.example.Project0.entity.MemberEntity;
 import com.example.Project0.repository.MemberRepository;
 import com.example.Project0.services.MemberService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -69,5 +71,22 @@ public class MemberServiceImpl implements MemberService {
     public void deleteById(Long memberId) {
         // jpa의 deleteBy~ 메서드를 호출만 하면 끝.
         memberRepository.deleteById(memberId);
+    }
+
+    @Override
+    public Long update(MemberUpdateDTO memberUpdateDTO) {
+        MemberEntity existingMember = memberRepository.findById(memberUpdateDTO.getMemberId()).orElseThrow(() -> new EntityNotFoundException("Member not found"));
+        existingMember.setMemberEmail(memberUpdateDTO.getMemberEmail());
+        existingMember.setMemberName(memberUpdateDTO.getMemberName());
+        existingMember.setMemberPassword(memberUpdateDTO.getMemberPassword());
+        Long memberId = memberRepository.save(existingMember).getId();
+        return memberId;
+    }
+
+    @Override
+    public MemberUpdateDTO findByEmail(String memberEmail) {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail);
+        MemberUpdateDTO memberUpdateDTO = MemberUpdateDTO.toMemberUpdateDTO(memberEntity);
+        return memberUpdateDTO;
     }
 }

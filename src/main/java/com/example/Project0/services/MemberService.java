@@ -3,6 +3,7 @@ package com.example.Project0.services;
 import java.util.List;
 import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.MemberDetailDTO;
+import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.SignUpDTO;
 
 public interface MemberService {
@@ -16,4 +17,8 @@ public interface MemberService {
     MemberDetailDTO findById(Long memberId);
 
     void deleteById(Long memberId);
+
+    Long update(MemberUpdateDTO memberUpdateDTO);
+
+    MemberUpdateDTO findByEmail(String memberEmail);
 }
