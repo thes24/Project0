@@ -1,6 +1,5 @@
 package com.example.Project0.entity;
 
-import com.example.Project0.dto.MemberDetailDTO;
 import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.SignUpDTO;
 
