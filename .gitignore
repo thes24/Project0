@@ -1,3 +1,4 @@
+.DS_Store
 HELP.md
 .gradle
 build/
@@ -40,5 +41,3 @@ out/
 
 ### SECRET ###
 product._properties
-
-.DS_Store
