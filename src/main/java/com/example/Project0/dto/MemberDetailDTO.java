@@ -39,7 +39,7 @@ public class MemberDetailDTO {
         for (MemberEntity me : memberEntityList) {
             memberDetailDTOList.add(toMemberDetailDTO(me));
         }
-
+        
         return memberDetailDTOList;
-    }    
+    }
 }

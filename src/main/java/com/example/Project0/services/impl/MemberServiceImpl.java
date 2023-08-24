@@ -93,9 +93,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberEntity getMemberbyId(Long memberId) {
         if (memberId == null) {
+            System.out.println("MemberService null");;
             return null;
         }
-        System.out.println("memberID" + memberId);
+        System.out.println("memberId" + memberId);
         Optional<MemberEntity> optMember = memberRepository.findById(memberId);
         if (optMember.isEmpty()) {
             return null;
@@ -108,10 +109,10 @@ public class MemberServiceImpl implements MemberService {
         if (memberEmail == null) {
             return null;
         }
-        MemberEntity optMember = memberRepository.findByMemberEmail(memberEmail);
-        if (optMember == null) {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if (memberEntity == null) {
             return null;
         }
-        return optMember;
+        return memberEntity;
     }
 }

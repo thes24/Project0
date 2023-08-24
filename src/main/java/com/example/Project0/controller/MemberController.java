@@ -45,7 +45,7 @@ public class MemberController {
         System.out.println("MemberDTO:" + signUpDTO);
         memberService.signup(signUpDTO);
         
-        return "member/signup";
+        return "member/login";
     }
 
     //로그인 페이지 출력 요청
@@ -59,9 +59,7 @@ public class MemberController {
         if (memberService.login(logInDTO)) {
             session.setAttribute("loginEmail", logInDTO.getMemberEmail());
             MemberEntity member = memberService.getMemberbyEmail(logInDTO.getMemberEmail());
-            session.setAttribute("member_id", member.getId());
-
-            // MemberEntity loginMember = memberService.getMemberbyId();
+            session.setAttribute("memberId", member.getId());
             return "member/mypage";
         } else {
             return "member/login";
@@ -70,15 +68,12 @@ public class MemberController {
 
     //회원목록 조회
     @GetMapping("/")
-    public String findAll(@SessionAttribute(name = "member_id", required = false) Long memberId, Model model) {
-        MemberEntity memberEntity = memberService.getMemberbyId(memberId);
-
-        if (memberEntity == null) {
-            model.addAttribute("memberList", null);
-            return "member/findAll";
-            // List<MemberDetailDTO> memberList = memberService.;
-        }
-
+    public String findAll(@SessionAttribute(name = "memberId", required = false) Long memberId, Model model) {
+        // MemberEntity memberEntity = memberService.getMemberbyId(memberId);
+        // if (memberEntity == null) {
+        //     model.addAttribute("memberList", null);
+        //     return "member/findAll";
+        // }
         List<MemberDetailDTO> memberList = memberService.findAll();
         model.addAttribute("memberList", memberList);
         return "member/findAll";
@@ -107,7 +102,7 @@ public class MemberController {
     */
 
     @DeleteMapping("/{memberIdForDelete}")
-    public ResponseEntity<?> deleteById2(@SessionAttribute(name = "member_id", required = false) Long memberId, @PathVariable Long memberIdForDelete) {
+    public ResponseEntity<?> deleteById2(@SessionAttribute(name = "memberId", required = false) Long memberId, @PathVariable Long memberIdForDelete) {
         MemberEntity memberEntity = memberService.getMemberbyId(memberId);
 
         if (memberEntity == null || memberId != memberIdForDelete) {
@@ -133,7 +128,7 @@ public class MemberController {
     }
 
     @PutMapping("/{memberId}")
-    public ResponseEntity<?> update2(@SessionAttribute(name = "member_id", required = false) Long memberId, @RequestBody MemberUpdateDTO memberUpdateDTO) {
+    public ResponseEntity<?> update2(@SessionAttribute(name = "memberId", required = false) Long memberId, @RequestBody MemberUpdateDTO memberUpdateDTO) {
         memberService.update(memberUpdateDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
