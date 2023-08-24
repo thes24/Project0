@@ -112,12 +112,6 @@ public class MemberController {
         return "member/update";
     }
 
-    @PostMapping("/update")
-    public String update(@ModelAttribute MemberUpdateDTO memberUpdateDTO) {
-        memberService.update(memberUpdateDTO);
-        return "redirect:/member/" + memberUpdateDTO.getMemberId();
-    }
-
     @PutMapping("/{memberId}")
     public ResponseEntity<?> update2(@SessionAttribute(name = "memberId", required = false) Long memberId, @RequestBody MemberUpdateDTO memberUpdateDTO) {
         memberService.update(memberUpdateDTO);
