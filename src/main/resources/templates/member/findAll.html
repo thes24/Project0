@@ -63,7 +63,7 @@
                 <td th:text="${member.memberName}">이름</td>
                 <!-- detail 주소 처리방식 @{|/주소/${같이 보낼 데이터}|} -->
                 <td><a th:href="@{|/member/${member.memberId}|}">조회</a></td>
-                <td><a th:href="@{|/member/delete/${member.memberId}|}">삭제</a></td>
+                <!-- <td><a th:href="@{|/member/delete/${member.memberId}|}">삭제</a></td> -->
                 <!-- 삭제 버튼 클릭 시 delete 함수 호출 -->
                 <!-- 함수호출하면서 memeberId 넘겨야함 -->
                 <!-- delelte 함수() : /member/memberId 주소로 요청하며, 요청 메서드는 delete -->

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.MemberDetailDTO;
 import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.SignUpDTO;
+import com.example.Project0.entity.MemberEntity;
 import com.example.Project0.services.MemberService;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,7 +43,7 @@ public class MemberController {
     public String signup(@ModelAttribute SignUpDTO signUpDTO) {
         System.out.println("Member Signup");
         System.out.println("MemberDTO:" + signUpDTO);
-        memberService.save(signUpDTO);
+        memberService.signup(signUpDTO);
         
         return "member/signup";
     }
@@ -56,6 +58,10 @@ public class MemberController {
     public String login(@ModelAttribute LogInDTO logInDTO, HttpSession session) {
         if (memberService.login(logInDTO)) {
             session.setAttribute("loginEmail", logInDTO.getMemberEmail());
+            MemberEntity member = memberService.getMemberbyEmail(logInDTO.getMemberEmail());
+            session.setAttribute("member_id", member.getId());
+
+            // MemberEntity loginMember = memberService.getMemberbyId();
             return "member/mypage";
         } else {
             return "member/login";
@@ -64,7 +70,15 @@ public class MemberController {
 
     //회원목록 조회
     @GetMapping("/")
-    public String findAll(Model model) {
+    public String findAll(@SessionAttribute(name = "member_id", required = false) Long memberId, Model model) {
+        MemberEntity memberEntity = memberService.getMemberbyId(memberId);
+
+        if (memberEntity == null) {
+            model.addAttribute("memberList", null);
+            return "member/findAll";
+            // List<MemberDetailDTO> memberList = memberService.;
+        }
+
         List<MemberDetailDTO> memberList = memberService.findAll();
         model.addAttribute("memberList", memberList);
         return "member/findAll";
@@ -82,16 +96,25 @@ public class MemberController {
         return "member/findById";
     }
 
+    /*
     // 회원삭제(/member/delete/5)
+    // 삭제해야 함 RESTFUL하지 않음
     @GetMapping("/delete/{memberId}")
     public String deleteById(@PathVariable("memberId") Long memberId) {
         memberService.deleteById(memberId);
         return "redirect:/member/";
     }
+    */
 
-    @DeleteMapping("/{memberId}")
-    public ResponseEntity<?> deleteById2(@PathVariable Long memberId) {
-        memberService.deleteById(memberId);
+    @DeleteMapping("/{memberIdForDelete}")
+    public ResponseEntity<?> deleteById2(@SessionAttribute(name = "member_id", required = false) Long memberId, @PathVariable Long memberIdForDelete) {
+        MemberEntity memberEntity = memberService.getMemberbyId(memberId);
+
+        if (memberEntity == null || memberId != memberIdForDelete) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        memberService.deleteById(memberIdForDelete);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -110,7 +133,7 @@ public class MemberController {
     }
 
     @PutMapping("/{memberId}")
-    public ResponseEntity<?> update2(@RequestBody MemberUpdateDTO memberUpdateDTO) {
+    public ResponseEntity<?> update2(@SessionAttribute(name = "member_id", required = false) Long memberId, @RequestBody MemberUpdateDTO memberUpdateDTO) {
         memberService.update(memberUpdateDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }

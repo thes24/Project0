@@ -5,10 +5,11 @@ import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.MemberDetailDTO;
 import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.SignUpDTO;
+import com.example.Project0.entity.MemberEntity;
 
 public interface MemberService {
     
-    Long save(SignUpDTO signUpDTO);
+    Long signup(SignUpDTO signUpDTO);
 
     boolean login(LogInDTO logInDTO);
 
@@ -21,4 +22,8 @@ public interface MemberService {
     Long update(MemberUpdateDTO memberUpdateDTO);
 
     MemberUpdateDTO findByEmail(String memberEmail);
+
+    MemberEntity getMemberbyId(Long memberId);
+
+    MemberEntity getMemberbyEmail(String memberEmail);
 }

@@ -23,7 +23,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    public Long save(SignUpDTO signUpDTO) {
+    public Long signup(SignUpDTO signUpDTO) {
         MemberEntity memberEntity = MemberEntity.toMemberEntity(signUpDTO);
         Long memberId = memberRepository.save(memberEntity).getId();
         return memberId;
@@ -88,5 +88,30 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail);
         MemberUpdateDTO memberUpdateDTO = MemberUpdateDTO.toMemberUpdateDTO(memberEntity);
         return memberUpdateDTO;
+    }
+
+    @Override
+    public MemberEntity getMemberbyId(Long memberId) {
+        if (memberId == null) {
+            return null;
+        }
+        System.out.println("memberID" + memberId);
+        Optional<MemberEntity> optMember = memberRepository.findById(memberId);
+        if (optMember.isEmpty()) {
+            return null;
+        }
+        return optMember.get(); // If a value is present, returns the value, otherwise throws NoSuchElementException.
+    }
+
+    @Override
+    public MemberEntity getMemberbyEmail(String memberEmail) {
+        if (memberEmail == null) {
+            return null;
+        }
+        MemberEntity optMember = memberRepository.findByMemberEmail(memberEmail);
+        if (optMember == null) {
+            return null;
+        }
+        return optMember;
     }
 }
