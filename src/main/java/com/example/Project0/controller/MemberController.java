@@ -30,10 +30,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
-    //생성자 주입
+    // 생성자 주입
     private final MemberService memberService;
 
-    //회원가입 페이지 출력 요청
+    // 회원가입 페이지 출력 요청
     @GetMapping("/signup")
     public String suForm() {
         return "member/signup";
@@ -48,7 +48,7 @@ public class MemberController {
         return "member/login";
     }
 
-    //로그인 페이지 출력 요청
+    // 로그인 페이지 출력 요청
     @RequestMapping("/login")
     public String logForm() {
         return "member/login";
@@ -66,7 +66,7 @@ public class MemberController {
         }
     }
 
-    //회원목록 조회
+    // 회원목록 조회
     @GetMapping("/")
     public String findAll(@SessionAttribute(name = "memberId", required = false) Long memberId, Model model) {
         // MemberEntity memberEntity = memberService.getMemberbyId(memberId);
@@ -80,35 +80,26 @@ public class MemberController {
     }
 
     // 상세조회
-    // /member/2, /member/15 => /member/{memberId}
-    // @PathVariavle : 경로상에 있는 변수를 가져올 때 사용
+    // /member/2 => /member/{memberId}
     @GetMapping("/{memberId}")
-    //public String findById(@PathVariable("memberId") Long memberId, Model model) {
-    // @PathVarialbe에서 받는 값의 이름과 매개변수의 값의 이름이 같다면 아래와 같이 생략가능
     public String findById(@PathVariable Long memberId, Model model) {
+        /* 
+         * @PathVariavle : 경로상에 있는 변수를 가져올 때 사용
+         * 
+         * 원래는 이렇게 써야 하지만 public String findById(@PathVariable("memberId") Long memberId, Model model) {
+         * @PathVarialbe에서 받는 값의 이름과 매개변수의 값의 이름이 같다면 위와 같이 생략가능
+         */
         MemberDetailDTO memberDetailDTO = memberService.findById(memberId);
         model.addAttribute("member", memberDetailDTO);
         return "member/findById";
     }
 
-    /*
-    // 회원삭제(/member/delete/5)
-    // 삭제해야 함 RESTFUL하지 않음
-    @GetMapping("/delete/{memberId}")
-    public String deleteById(@PathVariable("memberId") Long memberId) {
-        memberService.deleteById(memberId);
-        return "redirect:/member/";
-    }
-    */
-
     @DeleteMapping("/{memberIdForDelete}")
     public ResponseEntity<?> deleteById2(@SessionAttribute(name = "memberId", required = false) Long memberId, @PathVariable Long memberIdForDelete) {
         MemberEntity memberEntity = memberService.getMemberbyId(memberId);
-
         if (memberEntity == null || memberId != memberIdForDelete) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         memberService.deleteById(memberIdForDelete);
         return new ResponseEntity<>(HttpStatus.OK);
     }

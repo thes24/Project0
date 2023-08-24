@@ -27,18 +27,17 @@ public class LogInInterceptor implements HandlerInterceptor {
             throws Exception {
                 
         HttpSession session = request.getSession();
-        System.out.println("attribute1 " + session.getAttribute("memberId"));
+        System.out.println("Attribute Check " + session.getAttribute("memberId"));
         if (session.getAttribute("memberId") instanceof Long) {
             System.out.println("Long");
         }
         Long id = (Long) session.getAttribute("memberId");
-        System.out.println("id check" + id);
+        System.out.println("TypeCasting Check " + id);
         if (memberService == null) {
             System.out.println("member service null");
         }
 
         MemberEntity memberEntity = memberService.getMemberbyId(id);
-
         if (memberEntity == null) {
             response.sendError(401, "Bad 401");
             return false;
@@ -49,7 +48,7 @@ public class LogInInterceptor implements HandlerInterceptor {
 
         System.out.println("Bean: " + handlerMethod.getBean());
         System.out.println("Method: " + method);
-        
+
         return true;
     }
 

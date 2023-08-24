@@ -8,17 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
     <script>
-        // 아래 코드는 일반 Post 방식으로 수정하는 방법, 설명 생략
-        // const update = () => {
-        //     const inputPassword = document.getElementById("boardPassword").value
-        //     const boardPassword = "[[${boardUpdateDTO.boardPassword}]]"
-        //     if (inputPassword==boardPassword) {
-        //         updateForm.submit();
-        //     } else {
-        //         alert("비밀번호가 틀렸습니다.")
-        //     }
-        // }
-
         const boardUpdate = () => {
             const id = document.getElementById("boardId").value
             const writer = document.getElementById("boardWriter").value
@@ -32,7 +21,6 @@
                 boardTitle: title,
                 boardContent: content,
                 boardPassword: password
-
             })
             console.log(updateData)
             const reqUrl = "/board/" + id
