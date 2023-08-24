@@ -10,12 +10,12 @@
 	<h2>save.html</h2>
 	<form action="/board/write" method="post" th:object="${board}">
 		<!-- th:object="${}" : model에서 설정한 키를 사용 controller에서 설정한 model 키값과 같게 작성해야 한다. -->
-		<input type="text" th:field="*{boardWriter}" placeholder="작성자">
+		<input type="text" th:field="*{boardWriter}" placeholder="Author">
 		<!-- th:field="*{}" : DTO의 필드값을 input태그의 id와 name값으로 사용하겠다는 의미 반드시 DTO의 필드 네임과 같게 작성해야 한다. -->
-		<input type="text" th:field="*{boardPassword}" placeholder="비밀번호">
-		<input type="text" th:field="*{boardTitle}" placeholder="제목">
-		<input type="text" th:field="*{boardContent}" placeholder="내용">
-		<input type="submit" th:value="글작성">
+		<input type="text" th:field="*{boardPassword}" placeholder="Password">
+		<input type="text" th:field="*{boardTitle}" placeholder="Title">
+		<input type="text" th:field="*{boardContent}" placeholder="Content">
+		<input type="submit" th:value="Write-Board">
 	</form>
 </body>
 
