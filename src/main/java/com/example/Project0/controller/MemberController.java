@@ -25,6 +25,7 @@ import com.example.Project0.dto.SignUpDTO;
 import com.example.Project0.entity.MemberEntity;
 import com.example.Project0.services.MemberService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -76,6 +77,15 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);  // Session이 없으면 null return
+        if(session != null) {
+            session.invalidate();
+        }
+        return "redirect:/member/login";
+    }
+
     // 회원목록 조회
     @GetMapping("/")
     public String findAll(@SessionAttribute(name = "memberId", required = false) Long memberId, Model model) {
@@ -119,7 +129,7 @@ public class MemberController {
         String memberEmail = (String) session.getAttribute("loginEmail");
         MemberUpdateDTO memberUpdateDTO = memberService.findByMemberEmail(memberEmail);
         model.addAttribute("member", memberUpdateDTO);
-        return "member/update";
+        return "member/mypage";
     }
 
     @PutMapping("/{memberId}")

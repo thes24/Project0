@@ -9,6 +9,9 @@
 <body>
     <h2>mypage.html</h2>
     <p>Session: <span th:text="${session['loginEmail']}"></span></p>
+    <form action="/member/logout" method="post">
+        <input type="submit" value="LogOut">
+    </form>
     <a href="/member/update/{memberId}">Member Update</a> <br>
     <a href="/member/">Member FindAll</a> <br>
     <a href="/board/mainboard">Board</a> <br>
