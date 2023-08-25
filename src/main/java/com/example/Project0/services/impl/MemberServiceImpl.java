@@ -82,7 +82,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberUpdateDTO findByEmail(String memberEmail) {
+    public MemberUpdateDTO findByMemberEmail(String memberEmail) {
         MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail);
         MemberUpdateDTO memberUpdateDTO = MemberUpdateDTO.toMemberUpdateDTO(memberEntity);
         return memberUpdateDTO;
@@ -112,5 +112,10 @@ public class MemberServiceImpl implements MemberService {
             return null;
         }
         return memberEntity;
+    }
+
+    @Override
+    public boolean checkEmailDuplicate(String loginEmail) {
+        return memberRepository.existsByMemberEmail(loginEmail);
     }
 }

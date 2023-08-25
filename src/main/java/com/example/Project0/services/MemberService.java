@@ -21,9 +21,11 @@ public interface MemberService {
 
     Long update(MemberUpdateDTO memberUpdateDTO);
 
-    MemberUpdateDTO findByEmail(String memberEmail);
+    MemberUpdateDTO findByMemberEmail(String memberEmail);
 
     MemberEntity getMemberbyId(Long memberId);
 
     MemberEntity getMemberbyEmail(String memberEmail);
+
+    boolean checkEmailDuplicate(String loginEmail);
 }

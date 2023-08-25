@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,8 +42,14 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute SignUpDTO signUpDTO) {
-        System.out.println("Member Signup");
+    public String signup(@ModelAttribute SignUpDTO signUpDTO, BindingResult bindingResult) {
+        if (memberService.checkEmailDuplicate(signUpDTO.getMemberEmail())) {
+            System.out.println("INside");
+            bindingResult.addError(new FieldError("signUpDTO", "memberEmail", "로그인 아이디가 중복됩니다."));
+        }
+        if (bindingResult.hasErrors()) {
+            return "member/signup";
+        }
         System.out.println("MemberDTO:" + signUpDTO);
         memberService.signup(signUpDTO);
         
@@ -107,7 +115,7 @@ public class MemberController {
     @GetMapping("/update/{memberId}")
     public String updateForm(Model model, HttpSession session) {
         String memberEmail = (String) session.getAttribute("loginEmail");
-        MemberUpdateDTO memberUpdateDTO = memberService.findByEmail(memberEmail);
+        MemberUpdateDTO memberUpdateDTO = memberService.findByMemberEmail(memberEmail);
         model.addAttribute("member", memberUpdateDTO);
         return "member/update";
     }
