@@ -44,7 +44,9 @@ public class MemberController {
     @PostMapping("/signup")
     public String signup(@ModelAttribute SignUpDTO signUpDTO, BindingResult bindingResult) {
         if (memberService.checkEmailDuplicate(signUpDTO.getMemberEmail())) {
-            System.out.println("INside");
+            bindingResult.addError(new FieldError("signUpDTO", "memberEmail", "로그인 아이디가 중복됩니다."));
+        }
+        if (!signUpDTO.getMemberPassword().equals(signUpDTO.getMemberPasswordCheck())) {
             bindingResult.addError(new FieldError("signUpDTO", "memberEmail", "로그인 아이디가 중복됩니다."));
         }
         if (bindingResult.hasErrors()) {

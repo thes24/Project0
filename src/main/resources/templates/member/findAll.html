@@ -34,24 +34,12 @@
             success: function (res) {
                 console.log("ajax 성공", res)
                 // 삭제 성공 시 회원목록 페이지를 다시 요청
-                location.href = "/member/"
+                location.href = "/member/login"
             },
             error: function (err) {
-                alert("ajax 실패", err)
+                alert("", err)
             }
-
         })
-    }
-
-    // 아래도 함수선언 방법 중 하나임.
-    // 함수이름 : deleteFn, 매개변수 : memberId
-    const deleteFn = (memberId) => {
-        console.log(memberId)
-    }
-
-    // 함수이름 : deleteFn2, 매개변수 : X
-    const deleteFn2 = () => {
-
     }
 </script>
 
