@@ -66,14 +66,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LogInDTO logInDTO, HttpSession session) {
+    public HttpStatus login(@ModelAttribute LogInDTO logInDTO, HttpSession session) {
         if (memberService.login(logInDTO)) {
             session.setAttribute("loginEmail", logInDTO.getMemberEmail());
             MemberEntity member = memberService.getMemberbyEmail(logInDTO.getMemberEmail());
             session.setAttribute("memberId", member.getId());
-            return "member/mypage";
+            return HttpStatus.OK;
         } else {
-            return "member/login";
+            return HttpStatus.UNAUTHORIZED;
         }
     }
 
