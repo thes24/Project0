@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j // 로그를 기록할 수 있는 라이브러리(어노테이션)
-@RequestMapping("/board")
+@RequestMapping("/api/board")
 public class BoardController {
 
     private final BoardService boardService;
@@ -35,7 +35,7 @@ public class BoardController {
     public String mainboard() {
         return "board/mainboard";
     }
-    
+
     @GetMapping("/write")
     public String writeForm(Model model) {
         model.addAttribute("board", new BoardWriteDTO());

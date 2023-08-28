@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
     // 생성자 주입
@@ -55,7 +55,7 @@ public class MemberController {
         }
         System.out.println("MemberDTO:" + signUpDTO);
         memberService.signup(signUpDTO);
-        
+
         return "member/login";
     }
 
@@ -103,9 +103,9 @@ public class MemberController {
     // /member/2 => /member/{memberId}
     @GetMapping("/{memberId}")
     public String findById(@PathVariable Long memberId, Model model) {
-        /* 
+        /*
          * @PathVariavle : 경로상에 있는 변수를 가져올 때 사용
-         * 
+         *
          * 원래는 이렇게 써야 하지만 public String findById(@PathVariable("memberId") Long memberId, Model model) {
          * @PathVarialbe에서 받는 값의 이름과 매개변수의 값의 이름이 같다면 위와 같이 생략가능
          */
