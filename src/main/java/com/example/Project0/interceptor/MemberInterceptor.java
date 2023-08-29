@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Component
-public class LogInInterceptor implements HandlerInterceptor {
+public class MemberInterceptor implements HandlerInterceptor {
 
     @Autowired
     private MemberService memberService;
@@ -25,7 +25,7 @@ public class LogInInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-                
+
         HttpSession session = request.getSession();
         System.out.println("Attribute Check " + session.getAttribute("memberId"));
         if (session.getAttribute("memberId") instanceof Long) {
@@ -33,10 +33,6 @@ public class LogInInterceptor implements HandlerInterceptor {
         }
         Long id = (Long) session.getAttribute("memberId");
         System.out.println("TypeCasting Check " + id);
-        if (memberService == null) {
-            System.out.println("member service null");
-        }
-
         MemberEntity memberEntity = memberService.getMemberbyId(id);
         if (memberEntity == null) {
             response.sendError(401, "Bad 401");

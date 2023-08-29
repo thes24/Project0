@@ -22,7 +22,7 @@ import lombok.Getter;
  */
 @Getter
 public abstract class BaseEntity {
-    
+
     @CreationTimestamp // createTime 즉 insert가 수행된 시간
     @Column(updatable = false) // update 할 때 값이 들어가지 않게
     private LocalDateTime createDateTime; // insert 수행한 시간.

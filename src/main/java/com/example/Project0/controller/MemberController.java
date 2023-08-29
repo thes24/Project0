@@ -6,21 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.MemberDetailDTO;
-import com.example.Project0.dto.MemberUpdateDTO;
+import com.example.Project0.dto.MemberPublicDTO;
 import com.example.Project0.dto.SignUpDTO;
 import com.example.Project0.entity.MemberEntity;
 import com.example.Project0.services.MemberService;
@@ -36,71 +34,76 @@ public class MemberController {
     // 생성자 주입
     private final MemberService memberService;
 
-    // 회원가입 페이지 출력 요청
-    @GetMapping("/signup")
-    public String suForm() {
-        return "member/signup";
-    }
+    // @GetMapping("/signup")
+    // public String suForm() {
+    //     return "member/signup";
+    // }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute SignUpDTO signUpDTO, BindingResult bindingResult) {
-        if (memberService.checkEmailDuplicate(signUpDTO.getMemberEmail())) {
-            bindingResult.addError(new FieldError("signUpDTO", "memberEmail", "로그인 아이디가 중복됩니다."));
-        }
-        if (!signUpDTO.getMemberPassword().equals(signUpDTO.getMemberPasswordCheck())) {
-            bindingResult.addError(new FieldError("signUpDTO", "memberEmail", "로그인 아이디가 중복됩니다."));
-        }
-        if (bindingResult.hasErrors()) {
-            return "member/signup";
-        }
+    public String signup(@ModelAttribute SignUpDTO signUpDTO) {
         System.out.println("MemberDTO:" + signUpDTO);
         memberService.signup(signUpDTO);
-
         return "member/login";
     }
 
-    // 로그인 페이지 출력 요청
-    @RequestMapping("/login")
-    public String logForm() {
-        return "member/login";
-    }
+    // @RequestMapping("/login")
+    // public String logForm() {
+    //     return "member/login";
+    // }
 
     @PostMapping("/login")
-    public HttpStatus login(@ModelAttribute LogInDTO logInDTO, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody LogInDTO logInDTO, HttpSession session) {
         if (memberService.login(logInDTO)) {
             session.setAttribute("loginEmail", logInDTO.getMemberEmail());
-            MemberEntity member = memberService.getMemberbyEmail(logInDTO.getMemberEmail());
-            session.setAttribute("memberId", member.getId());
-            return HttpStatus.OK;
+            MemberEntity memberEntity = memberService.getMemberbyEmail(logInDTO.getMemberEmail());
+            session.setAttribute("memberId", memberEntity.getId());
+            session.setAttribute("memberName", memberEntity.getMemberName());
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return HttpStatus.UNAUTHORIZED;
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);  // Session이 없으면 null return
-        if(session != null) {
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false); // Session이 없으면 null return
+        if (session != null) {
             session.invalidate();
         }
-        return "redirect:/member/login";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // 회원목록 조회
-    @GetMapping("/")
-    public String findAll(@SessionAttribute(name = "memberId", required = false) Long memberId, Model model) {
+    @GetMapping("/check-login")
+    public ResponseEntity<?> loginCheck(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Object memberIdObj = session.getAttribute("memberId");
+            if (memberIdObj != null) {
+                Long memberId = (Long) memberIdObj;
+                MemberEntity memberEntity = memberService.getMemberbyId(memberId);
+                if (memberEntity != null) {
+                    MemberPublicDTO memberPublicDTO = MemberPublicDTO.toMemberPublicDTO(memberEntity);
+                    return new ResponseEntity<>(memberPublicDTO, HttpStatus.OK);
+                }
+            }
+        }
+        MemberPublicDTO guestMemberDTO = new MemberPublicDTO();
+        guestMemberDTO.setMemberId(-1L);
+        return new ResponseEntity<>(guestMemberDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/find-all")
+    public ResponseEntity<?> findAll(@SessionAttribute(name = "memberId", required = false) Long memberId, Model model) {
         // MemberEntity memberEntity = memberService.getMemberbyId(memberId);
         // if (memberEntity == null) {
         //     model.addAttribute("memberList", null);
         //     return "member/findAll";
         // }
         List<MemberDetailDTO> memberList = memberService.findAll();
-        model.addAttribute("memberList", memberList);
-        return "member/findAll";
+        // model.addAttribute("memberList", memberList);
+        return new ResponseEntity<>(memberList, HttpStatus.OK);
     }
 
-    // 상세조회
-    // /member/2 => /member/{memberId}
     @GetMapping("/{memberId}")
     public String findById(@PathVariable Long memberId, Model model) {
         /*
@@ -127,14 +130,14 @@ public class MemberController {
     @GetMapping("/update/{memberId}")
     public String updateForm(Model model, HttpSession session) {
         String memberEmail = (String) session.getAttribute("loginEmail");
-        MemberUpdateDTO memberUpdateDTO = memberService.findByMemberEmail(memberEmail);
-        model.addAttribute("member", memberUpdateDTO);
+        MemberDetailDTO memberDetailDTO = memberService.findByMemberEmail(memberEmail);
+        model.addAttribute("member", memberDetailDTO);
         return "member/mypage";
     }
 
     @PutMapping("/{memberId}")
-    public ResponseEntity<?> update2(@SessionAttribute(name = "memberId", required = false) Long memberId, @RequestBody MemberUpdateDTO memberUpdateDTO) {
-        memberService.update(memberUpdateDTO);
+    public ResponseEntity<?> update2(@SessionAttribute(name = "memberId", required = false) Long memberId, @RequestBody MemberDetailDTO memberDetailDTO) {
+        memberService.update(memberDetailDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

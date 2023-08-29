@@ -18,7 +18,13 @@ public class Project0Application {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry corsRegistry) {
-				corsRegistry.addMapping("/**").allowedOrigins("*");
+				corsRegistry.addMapping("/**")
+				.allowedOrigins("http://s.yeon-tae-woo.kro.kr")
+				.allowedOrigins("http://localhost:3000")
+				.allowedHeaders("*")
+				.allowedMethods("*")
+				.allowCredentials(true)
+				.maxAge(3600);
 			}
 		};
 	}

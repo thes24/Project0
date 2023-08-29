@@ -1,14 +1,14 @@
 package com.example.Project0.services;
 
 import java.util.List;
+
 import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.MemberDetailDTO;
-import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.SignUpDTO;
 import com.example.Project0.entity.MemberEntity;
 
 public interface MemberService {
-    
+
     Long signup(SignUpDTO signUpDTO);
 
     boolean login(LogInDTO logInDTO);
@@ -19,9 +19,9 @@ public interface MemberService {
 
     void deleteById(Long memberId);
 
-    Long update(MemberUpdateDTO memberUpdateDTO);
+    Long update(MemberDetailDTO memberDetailDTO);
 
-    MemberUpdateDTO findByMemberEmail(String memberEmail);
+    MemberDetailDTO findByMemberEmail(String memberEmail);
 
     MemberEntity getMemberbyId(Long memberId);
 

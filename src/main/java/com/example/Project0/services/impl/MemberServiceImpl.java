@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.Project0.dto.MemberDetailDTO;
-import com.example.Project0.dto.MemberUpdateDTO;
 import com.example.Project0.dto.LogInDTO;
 import com.example.Project0.dto.SignUpDTO;
 import com.example.Project0.entity.MemberEntity;
@@ -72,20 +71,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Long update(MemberUpdateDTO memberUpdateDTO) {
-        MemberEntity existingMember = memberRepository.findById(memberUpdateDTO.getMemberId()).orElseThrow(() -> new EntityNotFoundException("Member not found"));
-        existingMember.setMemberEmail(memberUpdateDTO.getMemberEmail());
-        existingMember.setMemberName(memberUpdateDTO.getMemberName());
-        existingMember.setMemberPassword(memberUpdateDTO.getMemberPassword());
+    public Long update(MemberDetailDTO memberDetailDTO) {
+        MemberEntity existingMember = memberRepository.findById(memberDetailDTO.getMemberId()).orElseThrow(() -> new EntityNotFoundException("Member not found"));
+        existingMember.setMemberEmail(memberDetailDTO.getMemberEmail());
+        existingMember.setMemberName(memberDetailDTO.getMemberName());
+        existingMember.setMemberPassword(memberDetailDTO.getMemberPassword());
         Long memberId = memberRepository.save(existingMember).getId();
         return memberId;
     }
 
     @Override
-    public MemberUpdateDTO findByMemberEmail(String memberEmail) {
+    public MemberDetailDTO findByMemberEmail(String memberEmail) {
         MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail);
-        MemberUpdateDTO memberUpdateDTO = MemberUpdateDTO.toMemberUpdateDTO(memberEntity);
-        return memberUpdateDTO;
+        MemberDetailDTO memberDetailDTO = MemberDetailDTO.toMemberDetailDTO(memberEntity);
+        return memberDetailDTO;
     }
 
     @Override
