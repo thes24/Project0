@@ -19,8 +19,7 @@ public class Project0Application {
 			@Override
 			public void addCorsMappings(CorsRegistry corsRegistry) {
 				corsRegistry.addMapping("/**")
-				.allowedOrigins("http://s.yeon-tae-woo.kro.kr")
-				.allowedOrigins("http://localhost:3000")
+				.allowedOrigins("http://localhost:3000", "http://s.yeon-tae-woo.kro.kr")
 				.allowedHeaders("*")
 				.allowedMethods("*")
 				.allowCredentials(true)
