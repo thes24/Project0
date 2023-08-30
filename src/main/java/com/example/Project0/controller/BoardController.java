@@ -21,7 +21,6 @@ import com.example.Project0.dto.BoardWriteDTO;
 import com.example.Project0.services.BoardService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
