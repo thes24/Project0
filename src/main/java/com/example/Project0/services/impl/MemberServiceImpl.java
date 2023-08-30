@@ -114,7 +114,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean checkEmailDuplicate(String loginEmail) {
-        return memberRepository.existsByMemberEmail(loginEmail);
+    public boolean checkEmailDuplicate(String signupEmail) {
+        return memberRepository.existsByMemberEmail(signupEmail);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,10 +39,19 @@ public class MemberController {
     // }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute SignUpDTO signUpDTO) {
+    public ResponseEntity<?> signup(@RequestBody SignUpDTO signUpDTO) {
         System.out.println("MemberDTO:" + signUpDTO);
         memberService.signup(signUpDTO);
-        return "member/login";
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity<?> emailCheck(@RequestBody SignUpDTO signUpDTO) {
+        String signupEmail = signUpDTO.getMemberEmail();
+        if (memberService.checkEmailDuplicate(signupEmail)) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // @RequestMapping("/login")
