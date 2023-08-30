@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j // 로그를 기록할 수 있는 라이브러리(어노테이션)
 @RequestMapping("/api/board")
 public class BoardController {
 
@@ -48,17 +47,15 @@ public class BoardController {
         return "board/mainboard";
     }
 
-    @GetMapping("/")
-    public String findAll(Model model) {
-        log.info("글보기 메서드 호출. 요청글번호 {}");
+    @GetMapping("/find-all")
+    public ResponseEntity<?> findAll(Model model) {
         List<BoardDetailDTO> boardDetailDTOList = boardService.findAll();
-        model.addAttribute("boardList", boardDetailDTOList);
-        return "board/findAll";
+        // model.addAttribute("boardList", boardDetailDTOList);
+        return new ResponseEntity<>(boardDetailDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/{boardId}")
     public String findById(@PathVariable Long boardId, Model model) {
-        log.info("글보기 메서드 호출. 요청글번호 {}", boardId);
         BoardDetailDTO boardDetailDTO = boardService.findById(boardId);
         model.addAttribute("boardDetailDTO", boardDetailDTO);
         return "board/findById";
