@@ -53,14 +53,14 @@ public class BoardController {
         return new ResponseEntity<>(boardDetailDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/{boardId}")
-    public String findById(@PathVariable Long boardId, Model model) {
+    @GetMapping("/find-id/{boardId}")
+    public ResponseEntity<?> findById(@PathVariable Long boardId, Model model) {
         BoardDetailDTO boardDetailDTO = boardService.findById(boardId);
-        model.addAttribute("boardDetailDTO", boardDetailDTO);
-        return "board/findById";
+        // model.addAttribute("boardDetailDTO", boardDetailDTO);
+        return new ResponseEntity<>(boardDetailDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{boardId}")
+    @DeleteMapping("/delete/{boardId}")
     public ResponseEntity<?> deleteById2(@PathVariable Long boardId) {
         boardService.deleteById(boardId);
         return new ResponseEntity<>(HttpStatus.OK);
