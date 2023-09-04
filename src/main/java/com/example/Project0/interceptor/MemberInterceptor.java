@@ -26,10 +26,15 @@ public class MemberInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
+        if (request.getMethod().equals("OPTIONS")) return true;
+
         HttpSession session = request.getSession();
         System.out.println("Attribute Check " + session.getAttribute("memberId"));
         if (session.getAttribute("memberId") instanceof Long) {
             System.out.println("Long");
+        } else {
+            response.sendError(401, "Bad 401");
+            return false;
         }
         Long id = (Long) session.getAttribute("memberId");
         System.out.println("TypeCasting Check " + id);

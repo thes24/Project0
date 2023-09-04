@@ -1,5 +1,6 @@
 package com.example.Project0.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +20,7 @@ import com.example.Project0.dto.BoardUpdateDTO;
 import com.example.Project0.dto.BoardWriteDTO;
 import com.example.Project0.services.BoardService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -29,21 +30,26 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("/mainboard")
-    public String mainboard() {
-        return "board/mainboard";
-    }
+    // @GetMapping("/mainboard")
+    // public String mainboard() {
+    //     return "board/mainboard";
+    // }
 
-    @GetMapping("/write")
-    public String writeForm(Model model) {
-        model.addAttribute("board", new BoardWriteDTO());
-        return "board/write";
-    }
+    // @GetMapping("/write")
+    // public String writeForm(Model model) {
+    //     model.addAttribute("board", new BoardWriteDTO());
+    //     return "board/write";
+    // }
 
     @PostMapping("/write")
-    public String write(@ModelAttribute("board") BoardWriteDTO boardWriteDTO) {
+    public ResponseEntity<?> write(@RequestBody BoardWriteDTO boardWriteDTO, HttpServletRequest request) {
+        Object boardWriterObj = request.getAttribute("memberEmail");
+        if (boardWriterObj != null) {
+            String boardWriter = (String) boardWriterObj;
+            boardWriteDTO.setBoardWriter(boardWriter);
+        }
         boardService.write(boardWriteDTO);
-        return "board/mainboard";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/find-all")
@@ -66,15 +72,17 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/update/{boardId}")
-    public String updateForm(@PathVariable Long boardId, Model model) {
-        BoardUpdateDTO boardUpdateDTO = boardService.findById2(boardId);
-        model.addAttribute("boardUpdateDTO", boardUpdateDTO);
-        return "board/update";
-    }
+    // @GetMapping("/update/{boardId}")
+    // public String updateForm(@PathVariable Long boardId, Model model) {
+    //     BoardUpdateDTO boardUpdateDTO = boardService.findById2(boardId);
+    //     model.addAttribute("boardUpdateDTO", boardUpdateDTO);
+    //     return "board/update";
+    // }
 
-    @PutMapping("/{boardId}")
+    @PutMapping("/update/{boardId}")
     public ResponseEntity<?> update2(@RequestBody BoardUpdateDTO boardUpdateDTO) {
+        LocalDateTime updateTime = LocalDateTime.now();
+        boardUpdateDTO.setUpdateDateTime(updateTime);
         boardService.update(boardUpdateDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }

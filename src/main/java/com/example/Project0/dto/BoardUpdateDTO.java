@@ -12,14 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardUpdateDTO {
-    
+
     private Long boardId;
     private String boardWriter;
     private String boardPassword;
     private String boardTitle;
     private String boardContent;
     private LocalDateTime updateDateTime;
-
 
     public static BoardUpdateDTO toBoardUpdateDTO(BoardEntity boardEntity) {
         BoardUpdateDTO boardUpdateDTO = new BoardUpdateDTO();
