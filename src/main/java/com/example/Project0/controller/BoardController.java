@@ -80,10 +80,18 @@ public class BoardController {
     // }
 
     @PutMapping("/update/{boardId}")
-    public ResponseEntity<?> update2(@RequestBody BoardUpdateDTO boardUpdateDTO) {
+    public ResponseEntity<?> update2(@PathVariable Long boardId, @RequestBody BoardUpdateDTO boardUpdateDTO) {
+        BoardDetailDTO boardDetailDTO = boardService.findById(boardId);
+        if (boardUpdateDTO.getBoardPassword() == null || boardUpdateDTO.getBoardPassword().isBlank()) {
+            boardUpdateDTO.setBoardPassword(boardDetailDTO.getBoardPassword());
+        }
+        if (!boardUpdateDTO.getBoardPassword().equals(boardDetailDTO.getBoardPassword())) {
+            return new ResponseEntity<>("Incorrect password. Please try again.", HttpStatus.UNAUTHORIZED);
+        }
         LocalDateTime updateTime = LocalDateTime.now();
         boardUpdateDTO.setUpdateDateTime(updateTime);
         boardService.update(boardUpdateDTO);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
