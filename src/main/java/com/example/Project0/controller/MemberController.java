@@ -112,17 +112,30 @@ public class MemberController {
         return new ResponseEntity<>(memberList, HttpStatus.OK);
     }
 
-    @GetMapping("/{memberId}")
-    public String findById(@PathVariable Long memberId, Model model) {
+    @GetMapping("/find-id/{memberId}")
+    public ResponseEntity<?> findById(@PathVariable Long memberId, HttpServletRequest request) {
         /*
          * @PathVariavle : 경로상에 있는 변수를 가져올 때 사용
          *
          * 원래는 이렇게 써야 하지만 public String findById(@PathVariable("memberId") Long memberId, Model model) {
          * @PathVarialbe에서 받는 값의 이름과 매개변수의 값의 이름이 같다면 위와 같이 생략가능
          */
+        HttpSession session = request.getSession(false);
+
+        Object sessionIdObj = session.getAttribute("memberId");
+        Long sessionId = (Long) sessionIdObj;
+        Object sessionEmailObj = session.getAttribute("memberEmail");
+        String sessionEmail = (String) sessionEmailObj;
+        Object sessionNameObj = session.getAttribute("memberName");
+        String sessionName = (String) sessionNameObj;
+
         MemberDetailDTO memberDetailDTO = memberService.findById(memberId);
-        model.addAttribute("member", memberDetailDTO);
-        return "member/findById";
+
+        if (sessionId != memberDetailDTO.getMemberId() && sessionEmail != memberDetailDTO.getMemberEmail() && sessionName != memberDetailDTO.getMemberName()) {
+            return new ResponseEntity<>(memberDetailDTO, HttpStatus.UNAUTHORIZED);
+        }
+        // model.addAttribute("member", memberDetailDTO);
+        return new ResponseEntity<>(memberDetailDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{memberIdForDelete}")

@@ -26,7 +26,13 @@ public class MemberInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
-        if (request.getMethod().equals("OPTIONS")) return true;
+        // check preHandle is working
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Method method = handlerMethod.getMethod();
+        System.out.println("Bean: " + handlerMethod.getBean());
+        System.out.println("Method: " + method);
+
+        if (request.getMethod().equals("OPTIONS")) return true; // to pass the CORS OPTIONS header.
 
         HttpSession session = request.getSession();
         System.out.println("Attribute Check " + session.getAttribute("memberId"));
@@ -37,19 +43,11 @@ public class MemberInterceptor implements HandlerInterceptor {
             return false;
         }
         Long id = (Long) session.getAttribute("memberId");
-        System.out.println("TypeCasting Check " + id);
         MemberEntity memberEntity = memberService.getMemberbyId(id);
         if (memberEntity == null) {
             response.sendError(401, "Bad 401");
             return false;
         }
-
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
-
-        System.out.println("Bean: " + handlerMethod.getBean());
-        System.out.println("Method: " + method);
-
         return true;
     }
 
