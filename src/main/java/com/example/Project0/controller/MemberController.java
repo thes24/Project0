@@ -132,7 +132,7 @@ public class MemberController {
         MemberDetailDTO memberDetailDTO = memberService.findById(memberId);
 
         if (sessionId != memberDetailDTO.getMemberId() && sessionEmail != memberDetailDTO.getMemberEmail() && sessionName != memberDetailDTO.getMemberName()) {
-            return new ResponseEntity<>(memberDetailDTO, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         // model.addAttribute("member", memberDetailDTO);
         return new ResponseEntity<>(memberDetailDTO, HttpStatus.OK);

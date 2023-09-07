@@ -26,13 +26,13 @@ public class MemberInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
+        if (request.getMethod().equals("OPTIONS")) return true; // to pass the CORS OPTIONS header.
+
         // check preHandle is working
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
         System.out.println("Bean: " + handlerMethod.getBean());
         System.out.println("Method: " + method);
-
-        if (request.getMethod().equals("OPTIONS")) return true; // to pass the CORS OPTIONS header.
 
         HttpSession session = request.getSession();
         System.out.println("Attribute Check " + session.getAttribute("memberId"));

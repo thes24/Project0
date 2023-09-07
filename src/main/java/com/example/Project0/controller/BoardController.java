@@ -21,6 +21,7 @@ import com.example.Project0.dto.BoardWriteDTO;
 import com.example.Project0.services.BoardService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -43,7 +44,8 @@ public class BoardController {
 
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody BoardWriteDTO boardWriteDTO, HttpServletRequest request) {
-        Object boardWriterObj = request.getAttribute("memberEmail");
+        HttpSession session = request.getSession(false);
+        Object boardWriterObj = session.getAttribute("memberEmail");
         if (boardWriterObj != null) {
             String boardWriter = (String) boardWriterObj;
             boardWriteDTO.setBoardWriter(boardWriter);
