@@ -29,6 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**")
                     .allowedOrigins("http://localhost:3000")
+                    .allowedOrigins("http://s.yeon-tae-woo.kro.kr/")
                     .allowedHeaders("*")
                     .allowedMethods("*")
                     .allowCredentials(true)
