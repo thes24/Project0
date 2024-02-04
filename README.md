@@ -1,8 +1,7 @@
 # Project0
 
 ## Outline
-Ilta Teacher : Rn  
-Team Member : 박호연 형 & 문경태
+Ilta Teacher : Rn
 
 This is a summer project to improve my skill as a backend programmer
 This is a Demo Project
